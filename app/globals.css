@@ -1,26 +1,33 @@
 @import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+:root { --background: #f8fafc; --foreground: #0f172a; }
+@theme inline { --color-background: var(--background); --color-foreground: var(--foreground); --font-sans: Arial, Helvetica, sans-serif; --font-mono: ui-monospace, monospace; }
+* { box-sizing: border-box; }
+html, body { overflow-x: hidden; }
+body { margin: 0; background: var(--background); color: var(--foreground); font-family: Arial, Helvetica, sans-serif; }
+button, input, select { font: inherit; } button, a, input, select { outline: none; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible { box-shadow: 0 0 0 3px rgb(59 130 246 / .3); }
+@layer components {
+  .panel { @apply rounded-xl border border-slate-200 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.03)]; }
+  .panel-heading { @apply flex items-center justify-between gap-4 border-b border-slate-100 px-5 py-4; }
+  .section-title { @apply text-base font-bold text-slate-900; } .section-copy { @apply mt-0.5 text-xs text-slate-500; }
+  .btn-primary { @apply inline-flex min-h-10 items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700; }
+  .btn-secondary { @apply inline-flex min-h-10 items-center justify-center rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50; }
+  .text-link { @apply shrink-0 text-sm font-semibold text-blue-600 hover:text-blue-700; } .icon-button { @apply flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50; }
+  .nav-link { @apply flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50 hover:text-slate-950; } .nav-active { @apply bg-blue-50 font-semibold text-blue-700 hover:bg-blue-50 hover:text-blue-700; }
+  .status-badge { @apply inline-flex whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-semibold; }
+  .status-present { @apply bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/15; } .status-absent { @apply bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-600/15; } .status-late { @apply bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/15; } .status-leave { @apply bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/15; } .status-inactive { @apply bg-slate-100 text-slate-600 ring-1 ring-inset ring-slate-500/15; }
+  .stat-icon { @apply flex h-11 w-11 shrink-0 items-center justify-center rounded-lg; } .stat-blue { @apply bg-blue-50 text-blue-600; } .stat-green { @apply bg-emerald-50 text-emerald-600; } .stat-red { @apply bg-rose-50 text-rose-600; } .stat-amber { @apply bg-amber-50 text-amber-600; } .stat-violet { @apply bg-violet-50 text-violet-600; }
+  .filter-bar { @apply grid gap-3 rounded-xl border border-slate-200 bg-white p-4 sm:grid-cols-2 lg:flex lg:items-end; }
+  .search-field { @apply flex min-h-10 flex-1 items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 text-slate-400 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-100; } .search-field input { @apply min-w-0 flex-1 border-0 bg-transparent py-2 text-sm text-slate-900 placeholder:text-slate-400; }
+  .filter-field, .date-field { @apply flex min-w-0 flex-col gap-1 text-xs font-semibold text-slate-600; } .filter-field select, .filter-field input, .date-field input { @apply min-h-10 min-w-0 rounded-lg border border-slate-200 bg-white px-3 text-sm font-medium text-slate-700; } .filter-field { @apply lg:w-48; } .date-field { @apply w-full sm:w-auto; }
+  .table-wrap { @apply w-full overflow-x-auto; } table { @apply w-full min-w-[720px] border-collapse text-left text-sm; } th { @apply border-b border-slate-200 bg-slate-50 px-5 py-3 text-xs font-semibold uppercase tracking-wider text-slate-500; } td { @apply border-b border-slate-100 px-5 py-3.5 text-slate-600; } tbody tr:last-child td { @apply border-b-0; } tbody tr { @apply hover:bg-slate-50/70; }
+  .empty-state { @apply flex min-h-64 flex-col items-center justify-center px-6 py-12 text-center; } .empty-state h3 { @apply mt-3 text-sm font-bold text-slate-900; } .empty-state p { @apply mt-1 max-w-sm text-sm text-slate-500; } .empty-icon { @apply flex h-11 w-11 items-center justify-center rounded-full bg-slate-100 text-slate-500; }
+  .attendance-button { @apply min-h-9 min-w-20 rounded-lg border bg-white px-3 py-2 text-xs font-semibold transition; }
+  .attendance-present { @apply border-emerald-200 text-emerald-700 hover:bg-emerald-50; } .attendance-present.selected { @apply border-emerald-600 bg-emerald-600 text-white shadow-sm; } .attendance-absent { @apply border-rose-200 text-rose-700 hover:bg-rose-50; } .attendance-absent.selected { @apply border-rose-600 bg-rose-600 text-white shadow-sm; } .attendance-late { @apply border-amber-200 text-amber-700 hover:bg-amber-50; } .attendance-late.selected { @apply border-amber-500 bg-amber-500 text-white shadow-sm; } .attendance-leave { @apply border-blue-200 text-blue-700 hover:bg-blue-50; } .attendance-leave.selected { @apply border-blue-600 bg-blue-600 text-white shadow-sm; }
+  .form-field { @apply flex min-w-0 flex-col gap-1.5 text-sm font-semibold text-slate-700; } .form-field b { @apply text-rose-500; } .form-field input, .form-field select, .form-field textarea { @apply min-h-10 min-w-0 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal text-slate-900 placeholder:text-slate-400 focus:border-blue-500; } .form-field textarea { @apply resize-y; } .form-field small { @apply text-xs font-medium text-rose-600; } .form-field [aria-invalid="true"] { @apply border-rose-400 bg-rose-50/30; }
+  .table-action { @apply whitespace-nowrap rounded-md px-2 py-1 text-xs font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900; }
+  .details-grid { @apply mt-5 grid gap-x-5 gap-y-4 sm:grid-cols-2; } .details-grid dt { @apply text-xs font-medium text-slate-500; } .details-grid dd { @apply mt-1 break-words text-sm font-semibold text-slate-800; }
+  .metric { @apply rounded-lg border border-slate-100 bg-slate-50 p-3; } .metric span { @apply block text-xs font-medium text-slate-500; } .metric b { @apply mt-1 block text-xl text-slate-900; }
+  .balance-card { @apply flex flex-col rounded-lg border border-slate-200 p-3; } .balance-card span { @apply text-xs text-slate-500; } .balance-card b { @apply mt-1 text-sm; } .balance-card small { @apply mt-1 text-xs text-slate-400; }
+  .leave-badge { @apply inline-flex whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-semibold; } .leave-pending { @apply bg-amber-50 text-amber-700; } .leave-approved { @apply bg-emerald-50 text-emerald-700; } .leave-rejected { @apply bg-rose-50 text-rose-700; }
 }
