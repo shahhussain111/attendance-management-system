@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Icon, IconName } from "@/components/icons";
-const nav: { href: string; label: string; icon: IconName }[] = [{ href: "/", label: "Dashboard", icon: "dashboard" }, { href: "/employees", label: "Employees", icon: "people" }, { href: "/attendance", label: "Mark attendance", icon: "calendar" }, { href: "/records", label: "Records", icon: "records" }, { href: "/monthly", label: "Monthly overview", icon: "chart" }, { href: "/leave", label: "Leave requests", icon: "calendar" }];
+const nav: { href: string; label: string; icon: IconName }[] = [{ href: "/", label: "Dashboard", icon: "dashboard" }, { href: "/employees", label: "Employees", icon: "people" }, { href: "/attendance", label: "Mark attendance", icon: "calendar" }, { href: "/records", label: "Records", icon: "records" }, { href: "/monthly", label: "Monthly overview", icon: "chart" }, { href: "/leave", label: "Leave requests", icon: "calendar" }, { href: "/shifts", label: "Shifts", icon: "clock" }, { href: "/holidays", label: "Holidays", icon: "calendar" }];
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname(); const [open, setOpen] = useState(false);
   return <div className="min-h-dvh bg-slate-50 text-slate-900">
