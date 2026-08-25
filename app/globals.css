@@ -1,20 +1,20 @@
 @import "tailwindcss";
-:root { --background: #f8fafc; --foreground: #0f172a; }
+:root { --background: #f6f8fb; --foreground: #172033; --surface: #fff; --border: #e4e9f0; }
 @theme inline { --color-background: var(--background); --color-foreground: var(--foreground); --font-sans: Arial, Helvetica, sans-serif; --font-mono: ui-monospace, monospace; }
 * { box-sizing: border-box; }
 html, body { overflow-x: hidden; }
-body { margin: 0; background: var(--background); color: var(--foreground); font-family: Arial, Helvetica, sans-serif; }
+body { margin: 0; background: var(--background); color: var(--foreground); font-family: Arial, Helvetica, sans-serif; text-rendering: optimizeLegibility; }
 button, input, select { font: inherit; } button, a, input, select { outline: none; }
 button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible { box-shadow: 0 0 0 3px rgb(59 130 246 / .3); }
 button:disabled { cursor: not-allowed; opacity: .5; }
 @layer components {
-  .panel { @apply rounded-xl border border-slate-200 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.03)]; }
-  .panel-heading { @apply flex items-center justify-between gap-4 border-b border-slate-100 px-5 py-4; }
+  .panel { @apply rounded-xl border border-slate-200 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.025),0_8px_24px_rgba(15,23,42,0.025)]; }
+  .panel-heading { @apply flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 px-5 py-4; }
   .section-title { @apply text-base font-bold text-slate-900; } .section-copy { @apply mt-0.5 text-xs text-slate-500; }
-  .btn-primary { @apply inline-flex min-h-10 items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700; }
+  .btn-primary { @apply inline-flex min-h-10 items-center justify-center rounded-lg bg-slate-950 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800; }
   .btn-secondary { @apply inline-flex min-h-10 items-center justify-center rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50; }
   .text-link { @apply shrink-0 text-sm font-semibold text-blue-600 hover:text-blue-700; } .icon-button { @apply flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50; }
-  .nav-link { @apply flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50 hover:text-slate-950; } .nav-active { @apply bg-blue-50 font-semibold text-blue-700 hover:bg-blue-50 hover:text-blue-700; }
+  .nav-link { @apply flex items-center gap-3 rounded-lg px-3 py-2 text-[13px] font-medium text-slate-600 transition hover:bg-slate-50 hover:text-slate-950; } .nav-active { @apply bg-slate-950 font-semibold text-white shadow-sm hover:bg-slate-900 hover:text-white; }
   .status-badge { @apply inline-flex whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-semibold; }
   .status-present { @apply bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/15; } .status-absent { @apply bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-600/15; } .status-late { @apply bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/15; } .status-leave { @apply bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/15; } .status-inactive { @apply bg-slate-100 text-slate-600 ring-1 ring-inset ring-slate-500/15; }
   .stat-icon { @apply flex h-11 w-11 shrink-0 items-center justify-center rounded-lg; } .stat-blue { @apply bg-blue-50 text-blue-600; } .stat-green { @apply bg-emerald-50 text-emerald-600; } .stat-red { @apply bg-rose-50 text-rose-600; } .stat-amber { @apply bg-amber-50 text-amber-600; } .stat-violet { @apply bg-violet-50 text-violet-600; }
@@ -35,4 +35,11 @@ button:disabled { cursor: not-allowed; opacity: .5; }
   .compact-select { @apply min-h-9 min-w-36 rounded-lg border border-slate-200 bg-white px-2 text-xs font-medium text-slate-700; }
   .schedule-banner { @apply flex flex-col gap-1 rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-800 sm:flex-row sm:items-center sm:justify-between; } .schedule-banner span { @apply text-xs text-blue-700; }
   .notice { @apply rounded-lg border px-4 py-3 text-sm font-medium; } .notice-success { @apply border-emerald-200 bg-emerald-50 text-emerald-800; } .notice-error { @apply border-rose-200 bg-rose-50 text-rose-800; }
+}
+@media print {
+  aside, header, .print\:hidden { display: none !important; }
+  main { max-width: none !important; padding: 0 !important; }
+  body { background: white; }
+  table { min-width: 0 !important; font-size: 10px; }
+  th, td { padding: 6px 8px !important; }
 }

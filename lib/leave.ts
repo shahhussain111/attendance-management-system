@@ -1,5 +1,5 @@
 export const leaveTypes = ["Annual Leave", "Sick Leave", "Casual Leave", "Unpaid Leave"] as const;
-export const leaveStatuses = ["Pending", "Approved", "Rejected"] as const;
+export const leaveStatuses = ["Pending", "Pending Manager", "Pending HR", "Approved", "Rejected"] as const;
 export type LeaveType = (typeof leaveTypes)[number]; export type LeaveStatus = (typeof leaveStatuses)[number];
 export type LeaveRequest = { id: string; employeeId: string; type: LeaveType; startDate: string; endDate: string; days: number; reason: string; requestDate: string; status: LeaveStatus };
 export type LeaveBalance = { annualAllowance: number; annualUsed: number; sickAllowance: number; sickUsed: number };
