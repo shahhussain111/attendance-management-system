@@ -13,8 +13,8 @@ export const defaultWorkingDays = [1, 2, 3, 4, 5];
 export const timeToMinutes = (time: string) => { const [hours, minutes] = time.split(":").map(Number); return hours * 60 + minutes; };
 export const shiftDuration = (shift: Shift) => { const start = timeToMinutes(shift.startTime); let end = timeToMinutes(shift.endTime); if (end <= start) end += 1440; return end - start; };
 export const isLateCheckIn = (time: string, shift: Shift) => timeToMinutes(time) > timeToMinutes(shift.startTime) + shift.graceMinutes;
-export function calculateTimeMetrics(checkIn: string, checkOut: string, shift: Shift): TimeMetrics {
-  const start = timeToMinutes(checkIn); const end = timeToMinutes(checkOut); const workedMinutes = Math.max(0, end - start); const duration = shiftDuration(shift); let scheduledEnd = timeToMinutes(shift.endTime); if (scheduledEnd <= timeToMinutes(shift.startTime)) scheduledEnd += 1440;
+export function calculateTimeMetrics(checkIn: string, checkOut: string, shift: Shift, breakMinutes = 0): TimeMetrics {
+  const start = timeToMinutes(checkIn); const end = timeToMinutes(checkOut); const workedMinutes = Math.max(0, end - start - breakMinutes); const duration = shiftDuration(shift); let scheduledEnd = timeToMinutes(shift.endTime); if (scheduledEnd <= timeToMinutes(shift.startTime)) scheduledEnd += 1440;
   return { workedMinutes, overtimeMinutes: Math.max(0, workedMinutes - duration), earlyDepartureMinutes: Math.max(0, Math.min(duration, scheduledEnd - end)) };
 }
 export const formatMinutes = (minutes = 0) => `${Math.floor(minutes / 60)}h ${String(minutes % 60).padStart(2, "0")}m`;
