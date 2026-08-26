@@ -4,8 +4,9 @@ export type AttendanceStatus = (typeof attendanceStatuses)[number];
 export type AttendanceSource = "manual" | "approved-leave" | "check-in";
 export type AttendanceStatusSource = "manual" | "automatic" | "approved-leave";
 export type BreakSession = { id: string; start: string; end?: string };
-export type AttendanceRecord = { employeeId: string; date: string; status: AttendanceStatus; source?: AttendanceSource; statusSource?: AttendanceStatusSource; leaveRequestId?: string; shiftId?: string; checkIn?: string; checkOut?: string; breaks?: BreakSession[]; workedMinutes?: number; overtimeMinutes?: number; earlyDepartureMinutes?: number };
-export const breakMinutesFor = (record?: AttendanceRecord, now?: string) => (record?.breaks || []).reduce((total, item) => total + Math.max(0, timeValue(item.end || now || item.start) - timeValue(item.start)), 0);
+export type AttendanceRecord = { employeeId: string; date: string; status: AttendanceStatus; source?: AttendanceSource; statusSource?: AttendanceStatusSource; leaveRequestId?: string; shiftId?: string; scheduledStart?: string; scheduledEnd?: string; checkIn?: string; checkOut?: string; breaks?: BreakSession[]; workedMinutes?: number; overtimeMinutes?: number; earlyDepartureMinutes?: number };
+const validTime = (time: unknown): time is string => typeof time === "string" && /^(?:[01]\d|2[0-3]):[0-5]\d$/.test(time);
+export const breakMinutesFor = (record?: AttendanceRecord, now?: string) => (record?.breaks || []).reduce((total, item) => { const end = item.end || now; return validTime(item.start) && validTime(end) ? total + Math.max(0, timeValue(end) - timeValue(item.start)) : total; }, 0);
 const timeValue = (time: string) => { const [hours, minutes] = time.split(":").map(Number); return hours * 60 + minutes; };
 export function toDateKey(date: Date) { const year = date.getFullYear(); const month = String(date.getMonth() + 1).padStart(2, "0"); const day = String(date.getDate()).padStart(2, "0"); return `${year}-${month}-${day}`; }
 export const getToday = () => toDateKey(new Date());
@@ -17,7 +18,9 @@ export const percentageFor = (records: AttendanceRecord[], employeeId: string, m
 export function normalizeAttendanceRecords(records: AttendanceRecord[]) {
   let changed = false; const canonical = new Map<string, AttendanceRecord>();
   records.forEach((stored) => {
-    let record = stored; if (!Array.isArray(record.breaks)) { changed = true; record = { ...record, breaks: [] }; }
+    let record = stored; const breaks = Array.isArray(record.breaks) ? record.breaks.filter((item) => item && typeof item.id === "string" && validTime(item.start) && (item.end == null || validTime(item.end))) : []; if (breaks.length !== (record.breaks?.length || 0) || !Array.isArray(record.breaks)) { changed = true; record = { ...record, breaks }; }
+    if ((record.checkIn && !validTime(record.checkIn)) || (record.checkOut && !validTime(record.checkOut))) { changed = true; record = { ...record, checkIn: validTime(record.checkIn) ? record.checkIn : undefined, checkOut: validTime(record.checkOut) ? record.checkOut : undefined, workedMinutes: undefined, overtimeMinutes: undefined, earlyDepartureMinutes: undefined }; }
+    if ((record.scheduledStart && !validTime(record.scheduledStart)) || (record.scheduledEnd && !validTime(record.scheduledEnd))) { changed = true; record = { ...record, scheduledStart: undefined, scheduledEnd: undefined }; }
     if (record.source === "manual" && record.checkIn) { changed = true; record = { ...record, source: "check-in", statusSource: "manual" }; }
     else if (!record.statusSource) { changed = true; record = { ...record, statusSource: record.source === "check-in" ? "automatic" : record.source === "approved-leave" ? "approved-leave" : "manual" }; }
     const key = `${record.employeeId}:${record.date}`; const previous = canonical.get(key);
