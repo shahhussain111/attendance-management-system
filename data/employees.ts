@@ -1,4 +1,5 @@
-export type EmployeeStatus = "Active" | "Inactive";
+export const employeeStatuses = ["Active", "Inactive", "Terminated"] as const;
+export type EmployeeStatus = (typeof employeeStatuses)[number];
 export type Employee = { id: string; name: string; department: string; role: string; email: string; phone: string; status: EmployeeStatus; initials: string; joiningDate: string; manager: string; location: string; deletedAt?: string };
 export const employees: Employee[] = [
   { id: "EMP-1001", name: "Ayesha Khan", department: "Engineering", role: "Frontend Engineer", email: "ayesha.khan@northstar.co", phone: "+92 300 123 4501", status: "Active", initials: "AK", joiningDate: "2023-02-13", manager: "Usman Tariq", location: "Lahore HQ" },

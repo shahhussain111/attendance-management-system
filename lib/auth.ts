@@ -29,7 +29,7 @@ const routeRoles: { pattern: RegExp; roles: DemoRole[] }[] = [
   { pattern: /^\/workforce\/?$/, roles: ["admin", "hr", "manager"] },
   { pattern: /^\/timesheets\/?$/, roles: ["admin", "hr", "manager", "employee"] },
   { pattern: /^\/shifts\/?$/, roles: ["admin", "hr"] },
-  { pattern: /^\/holidays\/?$/, roles: ["admin", "hr"] },
+  { pattern: /^\/holidays\/?$/, roles: ["admin"] },
   { pattern: /^\/reports\/?$/, roles: ["admin", "hr", "manager", "employee"] },
   { pattern: /^\/corrections\/?$/, roles: ["admin", "hr", "manager", "employee"] },
   { pattern: /^\/notifications\/?$/, roles: ["admin", "hr", "manager", "employee"] },
@@ -47,7 +47,7 @@ export const canDeleteEmployees = (role: DemoRole) => role === "admin";
 export const canManageAttendance = (role: DemoRole) => role === "admin" || role === "hr";
 export const canManageLeave = (role: DemoRole) => role === "admin" || role === "hr" || role === "manager";
 export const canManageShifts = (role: DemoRole) => role === "admin" || role === "hr";
-export const canManageHolidays = (role: DemoRole) => role === "admin" || role === "hr";
+export const canManageHolidays = (role: DemoRole) => role === "admin";
 export const visibleEmployeeIds = (user: DemoSessionUser) => user.role === "admin" || user.role === "hr" ? null : new Set([...(user.employeeId ? [user.employeeId] : []), ...(user.role === "manager" ? user.teamIds : [])]);
 export function getVisibleEmployees<T extends Employee>(items: T[], user: DemoSessionUser) { const ids = visibleEmployeeIds(user); return ids ? items.filter((item) => ids.has(item.id)) : items; }
 export function getVisibleAttendance<T extends AttendanceRecord>(items: T[], user: DemoSessionUser) { const ids = visibleEmployeeIds(user); return ids ? items.filter((item) => ids.has(item.employeeId)) : items; }

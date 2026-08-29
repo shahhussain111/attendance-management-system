@@ -6,7 +6,11 @@ export const weekDays = [
 ] as const;
 export const holidayTypes = ["Public Holiday", "Company Holiday", "Optional Holiday"] as const;
 export type HolidayType = (typeof holidayTypes)[number];
-export type Shift = { id: string; name: string; startTime: string; endTime: string; graceMinutes: number; workingDays: number[]; status: "Active" | "Inactive"; deletedAt?: string };
+export const shiftArrangements = ["Office", "Remote", "Hybrid"] as const;
+export type ShiftArrangement = (typeof shiftArrangements)[number];
+export type Shift = { id: string; name: string; startTime: string; endTime: string; graceMinutes: number; workingDays: number[]; status: "Active" | "Inactive"; workArrangement?: ShiftArrangement; deletedAt?: string };
+export const shiftArrangement = (shift?: Shift): ShiftArrangement => shift?.workArrangement || "Office";
+export const shiftDisplayName = (shift: Shift) => `${shift.name} · ${shiftArrangement(shift)}`;
 export type Holiday = { id: string; name: string; date: string; type: HolidayType };
 export type TimeMetrics = { workedMinutes: number; overtimeMinutes: number; earlyDepartureMinutes: number };
 export const defaultWorkingDays = [1, 2, 3, 4, 5];
