@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "@/components/auth-provider";
 import { useAttendance } from "@/components/attendance-provider";
 import { Avatar, EmptyState, PageHeading, ProgressBar } from "@/components/ui";
+import { SectionTabs } from "@/components/section-tabs";
 import { formatShortDate, getToday } from "@/lib/attendance";
 
 const KEY = "northstar-employee-lifecycle-v1";
@@ -20,6 +21,7 @@ export default function LifecyclePage() {
   if (!employee) return <EmptyState title="Employee unavailable" description="No authorized employee lifecycle record is available." />;
   return <div className="space-y-6">
     <PageHeading title={editable ? "Employee lifecycle" : "My onboarding"} description="Manage onboarding, employment records, and offboarding." action={editable ? <label className="date-field"><span>Employee</span><select className="min-h-10 rounded-lg border border-slate-200 px-3" value={selectedId} onChange={(event) => setSelected(event.target.value)}>{employees.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}</select></label> : undefined} />
+    {editable && <SectionTabs items={[{ href: "/employees", label: "Employees" }, { href: "/lifecycle", label: "Lifecycle" }, { href: "/departments", label: "Departments" }]} />}
     <section className="panel p-5"><div className="flex flex-col gap-4 sm:flex-row sm:items-center"><Avatar initials={employee.initials} /><div className="flex-1"><h2 className="text-lg font-bold">{employee.name}</h2><p className="text-sm text-slate-500">{employee.role} · {employee.department} · Joined {formatShortDate(employee.joiningDate)}</p></div><div className="min-w-44"><div className="mb-1 flex justify-between text-xs"><span>Onboarding</span><b>{progress}%</b></div><ProgressBar value={progress} /></div></div></section>
     <section className="grid gap-6 xl:grid-cols-2">
       <article className="panel overflow-hidden"><div className="panel-heading"><div><h2 className="section-title">Onboarding checklist</h2><p className="section-copy">{lifecycle.completed.length} of {tasks.length} complete</p></div></div><div className="grid gap-2 p-5 sm:grid-cols-2">{tasks.map((task) => <label className="flex items-center gap-3 rounded-lg border border-slate-100 p-3 text-sm" key={task}><input type="checkbox" disabled={!editable} checked={lifecycle.completed.includes(task)} onChange={() => toggle(task)} /><span className={lifecycle.completed.includes(task) ? "text-slate-500 line-through" : "font-medium"}>{task}</span></label>)}</div></article>
