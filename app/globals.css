@@ -80,6 +80,9 @@ button:disabled { cursor: not-allowed; opacity: .5; }
   .compact-select { @apply min-h-9 min-w-36 rounded-lg border border-slate-200 bg-white px-2 text-xs font-medium text-slate-700; }
   .schedule-banner { @apply flex flex-col gap-1 rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-800 sm:flex-row sm:items-center sm:justify-between; } .schedule-banner span { @apply text-xs text-blue-700; }
   .notice { @apply rounded-lg border px-4 py-3 text-sm font-medium; } .notice-success { @apply border-emerald-200 bg-emerald-50 text-emerald-800; } .notice-error { @apply border-rose-200 bg-rose-50 text-rose-800; }
+  .request-choice { @apply flex min-h-28 flex-col items-start justify-center rounded-xl border border-slate-200 bg-white p-5 text-left shadow-[0_1px_2px_rgba(15,23,42,.025)] transition hover:border-blue-300 hover:bg-blue-50/30; } .request-choice b { @apply text-base text-slate-950; } .request-choice span { @apply mt-1.5 text-sm leading-5 text-slate-500; } .request-choice.selected { @apply border-blue-500 bg-blue-50 ring-2 ring-blue-100; } .request-choice.selected b { @apply text-blue-800; }
+  .request-history-row { @apply grid gap-4 p-5 sm:grid-cols-2 lg:grid-cols-[1fr_.7fr_1.8fr_auto] lg:items-center; } .request-history-row b { @apply text-sm text-slate-900; } .request-history-row p { @apply break-words text-sm leading-5 text-slate-700; } .request-history-row small { @apply mt-1 block text-xs text-slate-400; } .request-history-row > .leave-badge { @apply justify-self-start lg:justify-self-end; }
+  .leave-resolved { @apply bg-teal-50 text-teal-700 ring-1 ring-inset ring-teal-600/15; }
 }
 @media (min-width: 1024px) {
   .northstar-admin-shell > aside { width: 226px !important; }

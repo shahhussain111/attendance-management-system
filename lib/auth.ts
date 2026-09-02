@@ -33,6 +33,7 @@ const routeRoles: { pattern: RegExp; roles: DemoRole[] }[] = [
   { pattern: /^\/reports\/?$/, roles: ["admin", "hr", "manager", "employee"] },
   { pattern: /^\/corrections\/?$/, roles: ["admin", "hr", "manager", "employee"] },
   { pattern: /^\/notifications\/?$/, roles: ["admin", "hr", "manager", "employee"] },
+  { pattern: /^\/requests\/?$/, roles: ["admin", "hr", "employee"] },
   { pattern: /^\/departments\/?$/, roles: ["admin", "hr"] },
   { pattern: /^\/audit\/?$/, roles: ["admin", "hr"] },
   { pattern: /^\/settings\/?$/, roles: ["admin", "hr"] },
