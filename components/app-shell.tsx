@@ -31,13 +31,9 @@ const adminGroups: Group[] = [
 const employeeGroups: Group[] = [{ title: "Employee portal", items: [
   { href: "/", labels: { employee: "My Dashboard" }, icon: "dashboard" },
   { href: "/schedule", labels: { employee: "My Schedule" }, icon: "calendar" },
-  { href: "/timesheets", labels: { employee: "My Timesheets" }, icon: "records" },
   { href: "/leave", labels: { employee: "My Leave" }, icon: "calendar" },
   { href: "/corrections", labels: { employee: "My Corrections" }, icon: "records" },
-  { href: "/calendar", labels: { employee: "My Calendar" }, icon: "calendar" },
-  { href: "/reports", labels: { employee: "My Summary" }, icon: "chart" },
   { href: "/employees/EMP-1001", labels: { employee: "My Profile" }, icon: "people" },
-  { href: "/notifications", labels: { employee: "Notifications" }, icon: "bell" },
 ] }];
 const adminLanding: Record<string, string> = { Overview: "/", People: "/employees", Attendance: "/workforce", Leave: "/leave", Reports: "/reports", Administration: "/settings" };
 const pageNames: Record<string, string> = { "/": "Overview", "/employees": "People", "/attendance": "Attendance", "/time-clock": "Time Clock", "/workforce": "Attendance", "/timesheets": "Timesheets", "/records": "Attendance Records", "/monthly": "Monthly Overview", "/reports": "Reports", "/leave": "Leave", "/corrections": "Attendance Corrections", "/departments": "People", "/lifecycle": "People", "/shifts": "Shifts", "/holidays": "Holidays", "/notifications": "Notifications", "/audit": "Audit Logs", "/settings": "Administration", "/schedule": "Schedule", "/calendar": "Workforce Calendar", "/announcements": "Announcements" };
