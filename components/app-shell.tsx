@@ -28,6 +28,17 @@ const adminGroups: Group[] = [
   { title: "Reports", items: [{ href: "/reports", labels: { admin: "Reports & Exports", hr: "Reports & Exports" }, icon: "chart" }, { href: "/monthly", labels: { admin: "Monthly Overview", hr: "Monthly Overview" }, icon: "chart" }, { href: "/calendar", labels: { admin: "Workforce Calendar", hr: "Workforce Calendar" }, icon: "calendar" }] },
   { title: "Administration", items: [{ href: "/settings", labels: { admin: "Settings", hr: "Settings" }, icon: "dashboard" }, { href: "/audit", labels: { admin: "Audit Logs", hr: "Audit Logs" }, icon: "records" }, { href: "/holidays", labels: { admin: "Holiday Management" }, icon: "calendar" }] },
 ];
+const employeeGroups: Group[] = [{ title: "Employee portal", items: [
+  { href: "/", labels: { employee: "My Dashboard" }, icon: "dashboard" },
+  { href: "/schedule", labels: { employee: "My Schedule" }, icon: "calendar" },
+  { href: "/timesheets", labels: { employee: "My Timesheets" }, icon: "records" },
+  { href: "/leave", labels: { employee: "My Leave" }, icon: "calendar" },
+  { href: "/corrections", labels: { employee: "My Corrections" }, icon: "records" },
+  { href: "/calendar", labels: { employee: "My Calendar" }, icon: "calendar" },
+  { href: "/reports", labels: { employee: "My Summary" }, icon: "chart" },
+  { href: "/employees/EMP-1001", labels: { employee: "My Profile" }, icon: "people" },
+  { href: "/notifications", labels: { employee: "Notifications" }, icon: "bell" },
+] }];
 const adminLanding: Record<string, string> = { Overview: "/", People: "/employees", Attendance: "/workforce", Leave: "/leave", Reports: "/reports", Administration: "/settings" };
 const pageNames: Record<string, string> = { "/": "Overview", "/employees": "People", "/attendance": "Attendance", "/time-clock": "Time Clock", "/workforce": "Attendance", "/timesheets": "Timesheets", "/records": "Attendance Records", "/monthly": "Monthly Overview", "/reports": "Reports", "/leave": "Leave", "/corrections": "Attendance Corrections", "/departments": "People", "/lifecycle": "People", "/shifts": "Shifts", "/holidays": "Holidays", "/notifications": "Notifications", "/audit": "Audit Logs", "/settings": "Administration", "/schedule": "Schedule", "/calendar": "Workforce Calendar", "/announcements": "Announcements" };
 
@@ -39,7 +50,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   if (!auth.ready || (!auth.isAuthenticated && !isLogin) || (auth.isAuthenticated && isLogin)) return <div className="flex min-h-dvh items-center justify-center bg-slate-50 text-sm text-slate-500">Loading Northstar…</div>;
   if (isLogin) return <>{children}</>;
   if (pathname === "/time-clock" && auth.canAccessRoute(pathname)) return <>{children}</>;
-  const user = auth.currentUser!; const allowed = auth.canAccessRoute(pathname); const initials = user.name.split(/\s+/).slice(0, 2).map((part) => part[0]).join(""); const adminShell = user.role === "admin" || user.role === "hr"; const employeeShell = user.role === "employee"; const productDarkShell = adminShell || employeeShell; const navigationGroups = adminShell ? adminGroups : groups;
+  const user = auth.currentUser!; const allowed = auth.canAccessRoute(pathname); const initials = user.name.split(/\s+/).slice(0, 2).map((part) => part[0]).join(""); const adminShell = user.role === "admin" || user.role === "hr"; const employeeShell = user.role === "employee"; const productDarkShell = adminShell || employeeShell; const navigationGroups = adminShell ? adminGroups : employeeShell ? employeeGroups : groups;
   const hour = new Date().getHours(); const greeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening"; const now = new Date(); const currentDate = `${new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(now)} (${new Intl.DateTimeFormat("en-US", { weekday: "short" }).format(now)})`;
   const itemForRole = (item: Item) => { const label = item.labels[user.role]; if (!label) return null; const href = user.role === "employee" && item.href.startsWith("/employees/") ? `/employees/${user.employeeId}` : item.href; return { ...item, href, label }; };
   return <div className={`min-h-dvh bg-slate-50 text-slate-900 ${adminShell ? "northstar-admin-shell" : employeeShell ? "northstar-employee-shell" : ""}`}>
