@@ -11,11 +11,14 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
-  function submit(event: FormEvent) {
+  async function submit(event: FormEvent) {
     event.preventDefault();
-    const result = auth.login(email, password);
-    if (!result.ok) return setError("Invalid email or password.");
+    setSubmitting(true);
+    const result = await auth.login(email, password);
+    setSubmitting(false);
+    if (!result.ok) return setError(result.message);
     router.replace("/");
   }
 
@@ -38,7 +41,7 @@ export default function LoginPage() {
           <label className="form-field"><span>Email</span><input autoComplete="email" type="email" value={email} onChange={(event) => { setEmail(event.target.value); setError(""); }} required /></label>
           <label className="form-field"><span>Password</span><span className="password-field"><input autoComplete="current-password" type={showPassword ? "text" : "password"} value={password} onChange={(event) => { setPassword(event.target.value); setError(""); }} required /><button type="button" onClick={() => setShowPassword((visible) => !visible)}>{showPassword ? "Hide" : "Show"}</button></span></label>
           {error && <div className="notice notice-error" role="alert">{error}</div>}
-          <button className="btn-primary w-full" type="submit">Sign in</button>
+          <button className="btn-primary w-full" disabled={submitting} type="submit">{submitting ? "Signing in…" : "Sign in"}</button>
         </form>
       </section>
     </div>

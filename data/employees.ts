@@ -12,5 +12,11 @@ export const employees: Employee[] = [
   { id: "EMP-1008", name: "Daniyal Shah", department: "Sales", role: "Account Executive", email: "daniyal.shah@northstar.co", phone: "+92 322 440 9156", status: "Active", initials: "DS", joiningDate: "2024-03-11", manager: "Faraz Sheikh", location: "Karachi Office" },
   { id: "EMP-1009", name: "Hira Qureshi", department: "Customer Success", role: "Success Manager", email: "hira.qureshi@northstar.co", phone: "+92 304 881 2370", status: "Active", initials: "HQ", joiningDate: "2023-07-03", manager: "Faraz Sheikh", location: "Remote" },
   { id: "EMP-1010", name: "Raza Hussain", department: "Engineering", role: "QA Engineer", email: "raza.hussain@northstar.co", phone: "+92 316 734 5002", status: "Inactive", initials: "RH", joiningDate: "2022-12-05", manager: "Usman Tariq", location: "Lahore HQ" },
+  { id: "EMP-1011", name: "Muneeb Ahmed", department: "Operations", role: "Managing Director", email: "muneeb.ahmed@northstar.co", phone: "", status: "Active", initials: "MA", joiningDate: "", manager: "", location: "Lahore HQ" },
+  { id: "EMP-1012", name: "Usman Tariq", department: "Engineering", role: "Engineering Manager", email: "usman.tariq@northstar.co", phone: "", status: "Active", initials: "UT", joiningDate: "", manager: "", location: "Lahore HQ" },
+  { id: "EMP-1013", name: "Nadia Saeed", department: "Design", role: "Design Manager", email: "nadia.saeed@northstar.co", phone: "", status: "Active", initials: "NS", joiningDate: "", manager: "", location: "Karachi Office" },
+  { id: "EMP-1014", name: "Fatima Raza", department: "Marketing", role: "Marketing Director", email: "fatima.raza@northstar.co", phone: "", status: "Active", initials: "FR", joiningDate: "", manager: "", location: "Lahore HQ" },
+  { id: "EMP-1015", name: "Saad Mirza", department: "Finance", role: "Finance Manager", email: "saad.mirza@northstar.co", phone: "", status: "Active", initials: "SM", joiningDate: "", manager: "", location: "Islamabad Office" },
+  { id: "EMP-1016", name: "Faraz Sheikh", department: "Sales", role: "Commercial Director", email: "faraz.sheikh@northstar.co", phone: "", status: "Active", initials: "FS", joiningDate: "", manager: "", location: "Karachi Office" },
 ];
 export const defaultDepartments = [...new Set(employees.map((employee) => employee.department))].sort();

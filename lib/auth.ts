@@ -1,18 +1,38 @@
-import type { Employee } from "@/data/employees";
+import { employees, type Employee } from "@/data/employees";
 import type { AttendanceRecord } from "@/lib/attendance";
 import type { LeaveRequest } from "@/lib/leave";
 
-export type DemoRole = "admin" | "hr" | "manager" | "employee";
-export type DemoUser = { id: string; email: string; password: string; name: string; role: DemoRole; employeeId?: string; teamIds: string[] };
-export type DemoSessionUser = Omit<DemoUser, "password">;
+export type AppRole = "admin" | "hr" | "manager" | "employee";
+export type AppSessionUser = { id: string; email: string; name: string; role: AppRole; employeeId?: string; teamIds: string[]; organizationId?: string; authSource: "demo" | "supabase" };
+export type DemoRole = AppRole;
+export type DemoUser = Omit<AppSessionUser, "authSource" | "organizationId"> & { passwordHash: string };
+export type DemoSessionUser = AppSessionUser;
 
 export const DEMO_SESSION_KEY = "northstar-demo-session-v1";
+const directReportIds = (managerEmployeeId: string) => {
+  const manager = employees.find((employee) => employee.id === managerEmployeeId);
+  return manager ? employees.filter((employee) => employee.manager === manager.name && !employee.deletedAt).map((employee) => employee.id) : [];
+};
+
 export const demoUsers: DemoUser[] = [
-  { id: "demo-admin", email: "admin@northstar.test", password: "admin123", name: "Muneeb Ahmed", role: "admin", teamIds: [] },
-  { id: "demo-hr", email: "hr@northstar.test", password: "hr123", name: "Zainab Noor", role: "hr", employeeId: "EMP-1005", teamIds: [] },
-  { id: "demo-manager", email: "manager@northstar.test", password: "manager123", name: "Usman Tariq", role: "manager", employeeId: "EMP-1007", teamIds: ["EMP-1001", "EMP-1002", "EMP-1003"] },
-  { id: "demo-employee", email: "employee@northstar.test", password: "employee123", name: "Ayesha Khan", role: "employee", employeeId: "EMP-1001", teamIds: [] },
+  { id: "demo-admin", email: "admin@northstar.test", passwordHash: "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9", name: "Muneeb Ahmed", role: "admin", employeeId: "EMP-1011", teamIds: [] },
+  { id: "demo-hr", email: "hr@northstar.test", passwordHash: "070a3b5e8d4bd5c46acccb91c9c54614c0cd649e78c4c4719e3a64270bae5ddf", name: "Zainab Noor", role: "hr", employeeId: "EMP-1005", teamIds: [] },
+  { id: "demo-manager", email: "manager@northstar.test", passwordHash: "866485796cfa8d7c0cf7111640205b83076433547577511d81f8030ae99ecea5", name: "Usman Tariq", role: "manager", employeeId: "EMP-1012", teamIds: directReportIds("EMP-1012") },
+  { id: "demo-employee", email: "employee@northstar.test", passwordHash: "5b2f8e27e2e5b4081c03ce70b288c87bd1263140cbd1bd9ae078123509b7caff", name: "Ayesha Khan", role: "employee", employeeId: "EMP-1001", teamIds: [] },
 ];
+
+export function createDemoSession(user: DemoUser): DemoSessionUser {
+  const { passwordHash: _, ...session } = user;
+  void _;
+  return { ...session, authSource: "demo" };
+}
+
+export async function verifyDemoPassword(user: DemoUser, password: string) {
+  const bytes = new TextEncoder().encode(password);
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  const hash = Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
+  return hash === user.passwordHash;
+}
 
 export const roleLabels: Record<DemoRole, string> = { admin: "Admin", hr: "HR Manager", manager: "Manager", employee: "Employee" };
 const routeRoles: { pattern: RegExp; roles: DemoRole[] }[] = [

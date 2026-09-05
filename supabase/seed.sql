@@ -1,0 +1,2 @@
+-- Seed data will be added when Northstar transitions away from localStorage.
+-- Phase 1 intentionally leaves the existing demo data and authentication intact.
